@@ -1,0 +1,94 @@
+[객체 포인터 변수 / 주소값]
+Complex x(10, 20);
+Complex *pCom;
+pCom = &x;
+pCom->ShowComplex();
+-----------------------------------
+[객체 복사]
+void CopyComplex(Complex *pDes, Complex src){
+ *pDes = stc;
+}
+void CopyComplex(Complex &pDes, Complex &src){
+ pDes = stc;
+}
+-----------------------------------
+[friend 함수]
+friend 붙힌다. 멤버함수에서 멤버변수 get 없이 접근 가능
+ex) Complex.left
+
+-----------------------------------
+[선행처리]
+return 없이 this 자신값을 변화
+[후행처리]
+temp 에 자신넣고
+자신값 증가후 temp return
+-----------------------------------
+[연산자 오버로딩]
+*덧셈
+Complex Complex::perator+(Complex right){
+ Complex res;
+ res.real = this->real + right.real;
+ res.image = this->image + right.image;
+ return res;
+}
+*뺄셈
+Complex Complex::perator-(const Complex &right){
+ Complex res;
+ res.real = this->real + right.real;
+ res.image = this->image + right.image;
+ return res;
+}
+*부호변경
+Complex Complex::oprtator-() const{
+ Complex res;
+ res.real = -real;
+ res.image = - image;
+ return res;
+}
+*ostream (friend 함수로 정의)
+ostream &operator<<(ostream &os, const Complex &comObj){
+ os << "(" <<comObj.real <<"+"<<comObj.image<<"i)"<<endl;
+ return os;
+}
+-------------------------------------
+[상속]
+생성자의 경우 파생클래스의 생성자가 나중!
+[기반 클래스에 파생클래스의 생성자 전달]
+Add::Add(int a, int b) : Calc(a, b){}
+
+*업캐스팅
+기반클래스형으로 형변환
+ ->Add AddObj(3, 5);
+ Calc *CalcPtr;
+ CalcPtr = &AddObj;
+*다운캐스팅
+파생클래스형으로 형변환
+ -> Calc *CalcPtr = new Add(3, 5); //강제 형변환만 가능
+ -> Add *AddPtr = (Add *)CalcPtr; // Add 멤버함수 쓰기위함
+
+*동적 바인딩
+virtual void prn();
+virtual void prn()=0; //완전 가상함수 /추상클래스
+-----------------------------------
+[예외처리]
+try{
+ if(b==0) throw b;
+ if(b==1) throw "text";
+}
+catch(int ex) cout << ex << "로 나누면 안됨" << endl;
+catch(char *str) cout << str << endl;
+-----------------------------------
+[템플릿]
+template <typename T>
+T myabs(T num)
+{
+ if(num<o) num=-num;
+ return num;
+}
+
+[멤버하수 템플릿]
+template <typename DATATYPE>
+Test<DATATYPE>::TEST(DATATYPE b)
+{
+ value=v;
+}
