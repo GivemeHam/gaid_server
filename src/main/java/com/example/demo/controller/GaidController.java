@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.io.IOException;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +14,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.model.RoomModel;
+import com.example.demo.service.RoomService;
+
 @Controller
+//@MapperScan(basePackages = "com.example.demo.dao")
 public class GaidController {
 
-	@RequestMapping("/test")
+	@Autowired
+	RoomService roomService;
+	
+	@RequestMapping("/test2")
 	public String test() {
 		System.out.println("test");
 		return "OK";
@@ -30,7 +39,21 @@ public class GaidController {
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
 	}
 	
-	@RequestMapping("/test2")
+	
+	@RequestMapping("/test") // URL 주소
+	public String list(Model model) {
+
+		RoomModel room = roomService.printRoom();
+		System.out.println("test : " + room.getRoom_idx());
+		model.addAttribute("idx", room.getRoom_idx());
+		model.addAttribute("floor", room.getRoom_floor());
+		model.addAttribute("name", room.getRoom_name());
+		model.addAttribute("professor", room.getRoom_professor());
+		
+		return "test"; // JSP 파일명
+	}
+	
+	@RequestMapping("/test3")
 	public ResponseEntity<byte[]> view_image2() throws IOException {
 		ClassPathResource imageFile = new ClassPathResource("static/images/n1593595036907.jpg");
 
