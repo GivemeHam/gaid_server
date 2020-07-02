@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,8 @@ import com.example.demo.message.ResponseMessage;
 import com.example.demo.model.FileInfo;
 import com.example.demo.service.FilesStorageService;
 
+import ch.qos.logback.core.subst.Tokenizer;
+
 @Controller
 @CrossOrigin("http://localhost:8080")
 public class FilesController {
@@ -32,7 +36,7 @@ public class FilesController {
   FilesStorageService storageService;
   private Environment environment;
   @PostMapping("/upload")
-  public ResponseEntity<ResponseMessage> uploadFiles(@RequestParam("files") MultipartFile[] files) {
+  public String uploadFiles(@RequestParam("files") MultipartFile[] files, Model model) {
     String message = "";
 
     System.out.println("uploadFiles");
@@ -43,12 +47,17 @@ public class FilesController {
         storageService.save(file);
         fileNames.add(file.getOriginalFilename());
       });
-      
+      String fn = fileNames.get(0);
+      StringTokenizer token_temp = new StringTokenizer(fn, ".");
+  		String token_name = token_temp.nextToken();
+      model.addAttribute("res","http://172.16.16.136:8080/view_img?img_name=" + fn);
       message = "Uploaded the files successfully: " + fileNames;
-      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+      return "/upload";
+      //return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
     } catch (Exception e) {
       message = "Fail to upload files!";
-      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+      //return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+      return "/upload";
     }
   }
 

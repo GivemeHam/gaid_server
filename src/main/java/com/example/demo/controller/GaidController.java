@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,12 +52,13 @@ public class GaidController {
 	}
 	
 	//형태소 분석
-	@RequestMapping("/getmorph")
+	@PostMapping("/getmorph")
 	public String morph(@RequestParam("morph") String morph, Model model) throws JSONException {
+		System.out.println("형결짱짱 : ");
 		String res = null;
 		MorphUtil morphUtil = new MorphUtil();
 		String sn = "0";
-		
+		System.out.println("형결짱짱 : " + morph);
 		JSONObject jo = new JSONObject();
 		//분석
 		String morph_res = morphUtil.komoran(morph);					//  안녕/NNG 하/XSV 시/EP 어요/EC 절/VV 는/ETM 주/NNP 용/XSN 이/VCP ㅂ니다/EC
@@ -109,6 +111,14 @@ public class GaidController {
 		model.addAttribute("res", jo.toString());
 		
 		return "room"; // JSP 파일명
+	}
+	
+	@GetMapping("/view_img")
+	public String view_img(@RequestParam("img_name") String img_name, Model model) {
+		System.out.println("view img test : " + img_name);
+		model.addAttribute("img_name", img_name);
+		
+		return "view_img";
 	}
 	
 	@RequestMapping("/test3")

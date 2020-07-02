@@ -16,7 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
 
-  private final Path root = Paths.get("./src/main/resources/static/images");
+  //private final Path root = Paths.get("./src/main/resources/static/images");
+	private final Path root = Paths.get("./src/main/webapp/img");
 
   @Override
   public void init() {
