@@ -14,8 +14,8 @@ public class RoomServiceImpl implements RoomService {
 	private RoomDao roomDao;
 	
 	@Override
-	public RoomModel printRoom() {
-		RoomModel room = roomDao.getRoom();
+	public RoomModel printRoom(String roomNo) {
+		RoomModel room = roomDao.getRoom(roomNo);
 		return room;
 	}
 }

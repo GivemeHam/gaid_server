@@ -91,17 +91,24 @@ public class GaidController {
 	}
 	
 	
-	@RequestMapping("/test") // URL 주소
-	public String list(Model model) {
+	@RequestMapping("/room") // URL 주소
+	public String roomInfo(@RequestParam("roomNo") String roomNo, Model model) throws JSONException{
+		System.out.println("testtest");
+		RoomModel room = roomService.printRoom(roomNo);
+		JSONObject jo = new JSONObject();
 
-		RoomModel room = roomService.printRoom();
-		System.out.println("test : " + room.getRoom_idx());
-		model.addAttribute("idx", room.getRoom_idx());
-		model.addAttribute("floor", room.getRoom_floor());
-		model.addAttribute("name", room.getRoom_name());
-		model.addAttribute("professor", room.getRoom_professor());
+		jo.put("room_idx",room.getRoom_idx());
+		jo.put("room_no",room.getRoom_no());
+		jo.put("room_floor",room.getRoom_floor());
+		jo.put("room_department",room.getRoom_department());
+		jo.put("room_professor",room.getRoom_professor());
+		jo.put("room_tel",room.getRoom_tel());
+		jo.put("room_name",room.getRoom_name());
+		jo.put("room_business",room.getRoom_business());
+		System.out.println("test : " + jo.toString());
+		model.addAttribute("res", jo.toString());
 		
-		return "test"; // JSP 파일명
+		return "room"; // JSP 파일명
 	}
 	
 	@RequestMapping("/test3")

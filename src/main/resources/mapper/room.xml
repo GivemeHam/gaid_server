@@ -3,7 +3,7 @@
 <mapper namespace="com.example.demo.dao.RoomDao">
 
 	<select id="getRoom" resultType="com.example.demo.model.RoomModel">
-		select * from room
+		select * from room WHERE room_no = #{param1}
 	</select>
 
 </mapper>
