@@ -5,6 +5,8 @@ import java.util.StringTokenizer;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,10 +52,12 @@ public class GaidController {
 	
 	//형태소 분석
 	@RequestMapping("/getmorph")
-	public String morph(@RequestParam("morph") String morph, Model model) {
+	public String morph(@RequestParam("morph") String morph, Model model) throws JSONException {
 		String res = null;
-		MorphUtil morphUtil = new MorphUtil(); 
+		MorphUtil morphUtil = new MorphUtil();
+		String sn = "0";
 		
+		JSONObject jo = new JSONObject();
 		//분석
 		String morph_res = morphUtil.komoran(morph);					//  안녕/NNG 하/XSV 시/EP 어요/EC 절/VV 는/ETM 주/NNP 용/XSN 이/VCP ㅂ니다/EC
 		StringTokenizer token1 = new StringTokenizer(morph_res, " ");
@@ -62,16 +66,21 @@ public class GaidController {
 	    	String token_name = token_temp.nextToken();
 	    	String morph_name = token_temp.nextToken();
 	    	
+	    	if(morph_name.equals("SN")) {		//숫자 넣어놓기
+	    		sn = token_name;
+	    	}
 	       // System.out.println("Test : " + token_name + morph_name); //" first : token, second : morph_name
 	        
 	        MorphModel morph_model = morphService.printMorph(token_name, morph_name);
 	        if(morph_model != null) {
 	        //	System.out.println("morph_model.getMorph_func() : " + morph_model.getMorph_func());
-	        	model.addAttribute("func",morph_model.getMorph_func());
+	        	jo.put("function", morph_model.getMorph_func()); 		//navi, info, cam
+	        	jo.put("roomNo", sn);
 	        	break;
 	        }
 	        
 	    }
+	    model.addAttribute("func",jo.toString());
 		/* MorphModel morph_model = morphService.printMorph("안녕", "NNG");
 	     System.out.println("morph_model.getMorph_func() : " + morph_model.getMorph_func());
 	     model.addAttribute("func",morph_model.getMorph_func());
