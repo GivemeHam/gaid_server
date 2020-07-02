@@ -6,4 +6,7 @@
 		select * from room WHERE room_no = #{param1}
 	</select>
 
+	<select id="getRoom_professor" resultType="com.example.demo.model.RoomModel">
+		select * from room WHERE room_professor like concat('%',#{param1},'%') LIMIT 1
+	</select>
 </mapper>

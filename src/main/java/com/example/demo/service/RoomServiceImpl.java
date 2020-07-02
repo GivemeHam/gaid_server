@@ -18,4 +18,10 @@ public class RoomServiceImpl implements RoomService {
 		RoomModel room = roomDao.getRoom(roomNo);
 		return room;
 	}
+
+	@Override
+	public RoomModel printRoom_professor(String professor_name) {
+		RoomModel room = roomDao.getRoom_professor(professor_name);
+		return room;
+	}
 }

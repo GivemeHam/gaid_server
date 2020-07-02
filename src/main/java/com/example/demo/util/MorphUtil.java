@@ -1,6 +1,7 @@
 package com.example.demo.util;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
@@ -48,5 +49,11 @@ public class MorphUtil {
 		
 		return analyzeResultList.getPlainText();
 		
+	}
+	
+	public String name_tunning(String name) {
+		StringTokenizer token = new StringTokenizer(name, " ");
+		String temp = token.nextToken();
+		return temp;
 	}
 }

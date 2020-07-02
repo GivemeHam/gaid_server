@@ -70,6 +70,17 @@ public class GaidController {
 	    	
 	    	if(morph_name.equals("SN")) {		//숫자 넣어놓기
 	    		sn = token_name;
+	    		RoomModel room = roomService.printRoom(sn);
+	    		if(room == null) sn = "0";
+	    	}
+	    	else if(token_name.equals("교수")) {	//교수 검색
+	    		StringTokenizer token_temp2 = new StringTokenizer(morph, "교수");
+	    		String professor_name =  token_temp2.nextToken();
+	    		professor_name = professor_name.substring(professor_name.length()-3, professor_name.length());
+	    		professor_name = morphUtil.name_tunning(professor_name);
+	    		RoomModel room = roomService.printRoom_professor(professor_name);
+	    		if(room != null) sn = room.getRoom_no();
+	    		System.out.println("교수님 : " + professor_name + "sn : " + sn);
 	    	}
 	       // System.out.println("Test : " + token_name + morph_name); //" first : token, second : morph_name
 	        
