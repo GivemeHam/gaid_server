@@ -30,6 +30,7 @@ public class GaidController {
 		return "OK";
 	}
 	
+	//jsp 없이 사진띄우기
 	@PostMapping("/viewImage")
 	public ResponseEntity<byte[]> view_image(@RequestParam("image_name") String image_name) throws IOException {
 		ClassPathResource imageFile = new ClassPathResource("static/images/" + image_name + ".jpg");
@@ -37,6 +38,18 @@ public class GaidController {
 		byte[] imageBytes = StreamUtils.copyToByteArray(imageFile.getInputStream());
 
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+	}
+	
+	//형태소 분석
+	@RequestMapping("/getmorph")
+	public String morph(@RequestParam("morph") String morph, Model model) {
+		String res = null;
+		res = morph;
+		System.out.println("morph log : " + res);
+		
+		model.addAttribute("res",res);
+		
+		return "getmorph"; 
 	}
 	
 	
