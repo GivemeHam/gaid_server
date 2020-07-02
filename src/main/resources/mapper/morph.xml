@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.MorphDao">
+
+	<select id="getMorph" resultType="com.example.demo.model.MorphModel">
+		select * from morph where morph_morph = #{param1} AND morph_pos = #{param2}
+	</select>
+
+</mapper>
