@@ -58,6 +58,7 @@ public class GaidController {
 		String res = null;
 		MorphUtil morphUtil = new MorphUtil();
 		String sn = "0";
+		String func = "";
 		System.out.println("형결짱짱 : " + morph);
 		JSONObject jo = new JSONObject();
 		//분석
@@ -85,9 +86,23 @@ public class GaidController {
 	       // System.out.println("Test : " + token_name + morph_name); //" first : token, second : morph_name
 	        
 	        MorphModel morph_model = morphService.printMorph(token_name, morph_name);
+	        
 	        if(morph_model != null) {
-	        //	System.out.println("morph_model.getMorph_func() : " + morph_model.getMorph_func());
-	        	jo.put("function", morph_model.getMorph_func()); 		//navi, info, cam
+	        	func = morph_model.getMorph_func();
+	        	if(func.equals("navi") && sn=="0") {	//용무관련 길안내
+	        		StringTokenizer token2 = new StringTokenizer(morph_res, " ");
+	        		while(token2.hasMoreTokens()) {
+	        			StringTokenizer token_temp2 = new StringTokenizer(token2.nextToken(), "/");
+	        	    	String token_name2 = token_temp2.nextToken();
+	        	    	String morph_name2 = token_temp2.nextToken();
+	        			if(morph_name2.equals("NNG")) {
+	        				RoomModel room2 = roomService.printRoom_business(token_name2);
+	        				if(room2 != null) sn = room2.getRoom_no();
+	        			}
+	        		}
+	        	}
+	        	
+	        	jo.put("function", func); 		//navi, info, cam
 	        	jo.put("roomNo", sn);
 	        	break;
 	        }

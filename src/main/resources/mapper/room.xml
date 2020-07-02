@@ -9,4 +9,8 @@
 	<select id="getRoom_professor" resultType="com.example.demo.model.RoomModel">
 		select * from room WHERE room_professor like concat('%',#{param1},'%') LIMIT 1
 	</select>
+	
+	<select id="getRoom_business" resultType="com.example.demo.model.RoomModel">
+		select * from room WHERE room_business like concat('%',#{param1},'%') LIMIT 1
+	</select>
 </mapper>
